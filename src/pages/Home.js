@@ -21,6 +21,7 @@ Geocode.setRegion('co');
 
 export default () => {
   const [cities, setCities] = useState([]);
+  const [pacientCases, setPacientCases] = useState([]);
 
   const organiceCity = async () => {
     let casesPerCity = [];
@@ -37,6 +38,7 @@ export default () => {
       }
     });
 
+    setPacientCases(data);
     setCities(casesPerCity);
   };
 
@@ -89,7 +91,7 @@ export default () => {
       <Grid container>
         <Grid item xs={12} md={3}>
           <Paper style={{ height: '100%' }}>
-            <SideBar {...{ cities }} />
+            <SideBar {...{ cities, pacientCases }} />
           </Paper>
         </Grid>
         <Grid item xs={12} md={9} style={{ height: '100vh', width: '100%' }}>
