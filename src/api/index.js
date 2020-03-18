@@ -22,7 +22,7 @@ export const getINSReport = async () => {
             confirmCaseObject.date = prop;
             break;
           case 2:
-            confirmCaseObject.city = prop;
+            confirmCaseObject.city = prop.replace(/\s/g, '');
             break;
           case 3:
             confirmCaseObject.place = prop;
@@ -73,9 +73,8 @@ export const getINSReport = async () => {
         }
       });
     }
-
     return confirmCaseObject;
   });
 
-  console.log(confirmCases);
+  return confirmCases.slice(1);
 };
