@@ -28,46 +28,16 @@ export const getINSReport = async () => {
             confirmCaseObject.place = prop;
             break;
           case 4:
-            confirmCaseObject.zeroToNine = prop === 'X';
+            confirmCaseObject.age = prop;
             break;
           case 5:
-            confirmCaseObject.tenToNineteen = prop === 'X';
+            confirmCaseObject.sex = prop;
             break;
           case 6:
-            confirmCaseObject.twentyToTweenyNine = prop === 'X';
+            confirmCaseObject.originKind = prop;
             break;
           case 7:
-            confirmCaseObject.thirtyToThirtyNine = prop === 'X';
-            break;
-          case 8:
-            confirmCaseObject.forthyToForthyNine = prop === 'X';
-            break;
-          case 9:
-            confirmCaseObject.FifthyToFiftyNine = prop === 'X';
-            break;
-          case 10:
-            confirmCaseObject.sixtyToSixtynine = prop === 'X';
-            break;
-          case 11:
-            confirmCaseObject.seventyToSeventyNine = prop === 'X';
-            break;
-          case 12:
-            confirmCaseObject.eigthyToEightyNine = prop === 'X';
-            break;
-          case 13:
-            confirmCaseObject.NinetyToOver = prop === 'X';
-            break;
-          case 14:
-            confirmCaseObject.femine = prop === 'X';
-            break;
-          case 15:
-            confirmCaseObject.male = prop === 'X';
-            break;
-          case 16:
-            confirmCaseObject.import = prop === 'X';
-            break;
-          case 17:
-            confirmCaseObject.local = prop === 'X';
+            confirmCaseObject.origin = prop;
             break;
           default:
         }

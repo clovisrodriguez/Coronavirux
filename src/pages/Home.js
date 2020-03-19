@@ -10,6 +10,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
+import CircularProgress from '@material-ui/core/CircularProgress';
 
 import SideBar from '../components/SideBar';
 
@@ -22,6 +23,7 @@ Geocode.setRegion('co');
 export default () => {
   const [cities, setCities] = useState([]);
   const [pacientCases, setPacientCases] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   const organiceCity = async () => {
     let casesPerCity = [];
@@ -39,12 +41,23 @@ export default () => {
     });
 
     setPacientCases(data);
-    setCities(casesPerCity);
+
+    const citiesWithLocation = await Promise.all(
+      casesPerCity &&
+        casesPerCity.map(async city => {
+          const location = await getGeoReference(city.name);
+          return { ...city, location };
+        })
+    );
+
+    setCities(citiesWithLocation);
   };
 
   useEffect(() => {
     const getData = async () => {
+      setLoading(true);
       await organiceCity();
+      setLoading(false);
     };
 
     getData();
@@ -57,28 +70,18 @@ export default () => {
   };
 
   const handelApiLoaded = async (map, maps, cities = []) => {
-    if (cities.length > 0) {
-      const citiesWithLocation = await Promise.all(
-        cities &&
-          cities.map(async city => {
-            const location = await getGeoReference(city.name);
-            return { ...city, location };
-          })
-      );
-
-      citiesWithLocation.forEach(cityMap => {
-        new maps.Circle({
-          strokeColor: '#FF0000',
-          strokeOpacity: 0.8,
-          strokeWeight: 2,
-          fillColor: '#FF0000',
-          fillOpacity: 0.35,
-          map: map,
-          center: cityMap.location,
-          radius: cityMap.cases * 400
-        });
+    cities.forEach(cityMap => {
+      new maps.Circle({
+        strokeColor: '#FF0000',
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: '#FF0000',
+        fillOpacity: 0.35,
+        map: map,
+        center: cityMap.location,
+        radius: cityMap.cases * 400
       });
-    }
+    });
   };
 
   return (
@@ -95,8 +98,13 @@ export default () => {
           </Paper>
         </Grid>
         <Grid item xs={12} md={9} style={{ height: '100vh', width: '100%' }}>
-          <GoogleMapsWrapper {...{ handelApiLoaded, cities }} />
+          {loading ? (
+            <CircularProgress />
+          ) : (
+            <GoogleMapsWrapper {...{ handelApiLoaded, cities }} />
+          )}
         </Grid>
+        }
       </Grid>
     </Box>
   );

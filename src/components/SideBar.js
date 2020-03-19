@@ -4,14 +4,37 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from 'lodash';
 
-export default function SideBar({ cities = [] }) {
+export default function SideBar({ cities = [], pacientCases }) {
   const [activeData, setActiveData] = useState(cities);
   const [totalCases, setTotalCases] = useState(0);
+  const [casesPerAge, setCasesPerAge] = useState([]);
 
   const calculateCases = () => {
     const totalCases = activeData.reduce((total, value) => {
       return value.cases + total;
     }, 0);
+
+    let casesPerAgeObject = [];
+
+    const dataAge =
+      activeData.length === 1
+        ? _.filter(pacientCases, pacient => activeData[0].name === pacient.city)
+        : pacientCases;
+    
+    dataAge.forEach(pacient => {
+      const index = _.findIndex(
+        casesPerAgeObject,
+        obj => obj.range === pacient.age
+      );
+
+      if (index >= 0) {
+        casesPerAgeObject[index].cases++;
+      } else {
+        casesPerAgeObject.push({ range: pacient.age, cases: 1 });
+      }
+    });
+
+    console.log(casesPerAgeObject);
 
     setTotalCases(totalCases);
   };
