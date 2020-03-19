@@ -25,35 +25,35 @@ export default () => {
   const [pacientCases, setPacientCases] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const organiceCity = async () => {
-    let casesPerCity = [];
-
-    const data = await getINSReport();
-
-    _.map(data, 'city').forEach(city => {
-      const index = _.findIndex(casesPerCity, obj => obj.name === city);
-
-      if (index >= 0) {
-        casesPerCity[index].cases++;
-      } else {
-        casesPerCity.push({ name: city, cases: 1 });
-      }
-    });
-
-    setPacientCases(data);
-
-    const citiesWithLocation = await Promise.all(
-      casesPerCity &&
-        casesPerCity.map(async city => {
-          const location = await getGeoReference(city.name);
-          return { ...city, location };
-        })
-    );
-
-    setCities(citiesWithLocation);
-  };
-
   useEffect(() => {
+    const organiceCity = async () => {
+      let casesPerCity = [];
+
+      const data = await getINSReport();
+
+      _.map(data, 'city').forEach(city => {
+        const index = _.findIndex(casesPerCity, obj => obj.name === city);
+
+        if (index >= 0) {
+          casesPerCity[index].cases++;
+        } else {
+          casesPerCity.push({ name: city, cases: 1 });
+        }
+      });
+
+      setPacientCases(data);
+
+      const citiesWithLocation = await Promise.all(
+        casesPerCity &&
+          casesPerCity.map(async city => {
+            const location = await getGeoReference(city.name);
+            return { ...city, location };
+          })
+      );
+
+      setCities(citiesWithLocation);
+    };
+
     const getData = async () => {
       setLoading(true);
       await organiceCity();
@@ -104,7 +104,6 @@ export default () => {
             <GoogleMapsWrapper {...{ handelApiLoaded, cities }} />
           )}
         </Grid>
-        }
       </Grid>
     </Box>
   );
