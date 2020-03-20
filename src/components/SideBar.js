@@ -4,7 +4,6 @@ import TextField from '@material-ui/core/TextField';
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from 'lodash';
 import {
-  RadialBarChart,
   BarChart,
   Tooltip,
   ResponsiveContainer,
@@ -32,6 +31,9 @@ const useStyles = makeStyles(theme => ({
     paddingTop: '1rem',
     paddingBottom: '1rem',
     textAlign: 'center'
+  },
+  pointCardContainer: {
+    display: 'flex'
   }
 }));
 
@@ -73,6 +75,7 @@ export default function SideBar({ cities = [], pacientCases }) {
   const [casesPerAge, setCasesPerAge] = useState([]);
   const [casesPerPlace, setCasesPerPlace] = useState([]);
   const [casesPerDate, setCasesPerDate] = useState([]);
+  const [casesPerOriginKind, setCasesPerOriginKind] = useState([]);
 
   useEffect(() => {
     setActiveData(cities);
@@ -93,6 +96,9 @@ export default function SideBar({ cities = [], pacientCases }) {
           : pacientCases;
 
       setTotalCases(totalCases);
+      setCasesPerOriginKind(
+        calculateCasesPerParameter(activeDataPatients, 'originKind')
+      );
       setCasesPerDate(
         calculateCasesPerParameter(activeDataPatients, 'date', 0.001)
       );
@@ -109,7 +115,12 @@ export default function SideBar({ cities = [], pacientCases }) {
     <div className={classes.root}>
       <div className={classes.boxContainer}>
         <Typography variant={'h5'}>Casos Confirmados</Typography>
-        <Typography variant={'h6'}>{totalCases}</Typography>
+        <Typography
+          variant={'h6'}
+          style={{ fontWeigth: 900, color: '#e53935', fontSize: '2rem' }}
+        >
+          {totalCases}
+        </Typography>
       </div>
       <Divider variant='middle' />
       <Autocomplete
@@ -128,50 +139,21 @@ export default function SideBar({ cities = [], pacientCases }) {
           />
         )}
       />
-      <div className={classes.boxContainer}>
-        <Typography variant={'h6'}>Casos por edad</Typography>
-        <ResponsiveContainer width='100%' height={200}>
-          <RadialBarChart
-            dataKey='cases'
-            data={casesPerAge}
-            innerRadius='10%'
-            outerRadius='80%'
-            startAngle={180}
-            endAngle={0}
-          >
-            <Tooltip
-              content={({ payload }) => {
-                return (
-                  <Card style={{ padding: '1rem' }}>
-                    <Typography variant='caption'>
-                      {_.get(payload[0], 'payload.age', 'none') + ' Años'}
-                    </Typography>
-                    <Typography variant='body1'>
-                      {_.get(payload[0], 'value', 0) + ' Casos'}
-                    </Typography>
-                  </Card>
-                );
-              }}
-            />
-            <RadialBar
-              minAngle={15}
-              background
-              clockWise={true}
-              dataKey='cases'
-            />
-          </RadialBarChart>
-        </ResponsiveContainer>
+      <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
+        {casesPerPlace.map((kind, index) => (
+          <DataCard {...{ title: kind.place, total: kind.cases }} key={index} />
+        ))}
       </div>
-      <div className={classes.boxContainer} style={{ marginTop: '-6rem' }}>
-        <Typography variant={'h6'}>Lugar de Atención</Typography>
+      <div className={classes.boxContainer}>
+        <Typography variant={'h6'}>Casos por Edad</Typography>
         <div style={{ height: '1rem' }}></div>
-        <ResponsiveContainer width='100%' height={160}>
-          <BarChart data={casesPerPlace}>
-            <XAxis dataKey='place' />
+        <ResponsiveContainer width={300} height={160}>
+          <BarChart data={casesPerAge}>
+            <XAxis dataKey='age' />
             <YAxis />
             <Tooltip
               content={({ payload }) => (
-                <CustomToolTip {...{ payload, prop: 'place', word: '' }} />
+                <CustomToolTip {...{ payload, prop: 'age', word: 'años' }} />
               )}
             />
             <Bar dataKey='cases' />
@@ -198,6 +180,22 @@ export default function SideBar({ cities = [], pacientCases }) {
     </div>
   );
 }
+
+const DataCard = ({ title, total }) => {
+  return (
+    <div style={{ padding: '1rem', width: '150px' }}>
+      <Typography variant={'h5'} style={{ fontSize: '1rem' }}>
+        {title}
+      </Typography>
+      <Typography
+        variant={'h6'}
+        style={{ fontWeigth: 800, color: '#e53935', fontSize: '1.7rem' }}
+      >
+        {total}
+      </Typography>
+    </div>
+  );
+};
 
 const CustomToolTip = ({ payload, prop, word }) => {
   return (

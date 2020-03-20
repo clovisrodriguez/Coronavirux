@@ -137,7 +137,7 @@ export default () => {
       <Grid container alignContent='center' alignItems='center'>
         <Grid item xs={12} md={5} lg={3}>
           <Paper style={{ height: '100%' }}>
-            <SideBar {...{ cities, pacientCases }} />
+            {!loading && <SideBar {...{ cities, pacientCases }} />}
           </Paper>
         </Grid>
         <Grid
