@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import GoogleMap from 'google-map-react';
 import Geocode from 'react-geocode';
 import _ from 'lodash';
-import { getINSReport } from '../api';
+import { getINSReport, createCity, getCities } from '../api';
 
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
@@ -27,9 +27,16 @@ export default () => {
 
   useEffect(() => {
     const organiceCity = async () => {
+      const data = await getINSReport();
+      let locations;
       let casesPerCity = [];
 
-      const data = await getINSReport();
+      try {
+        locations = _.get(await getCities(), 'data.listCitiess.items');
+      } catch(e) {
+        console.log(e);
+      }
+
 
       _.map(data, 'city').forEach(city => {
         const index = _.findIndex(casesPerCity, obj => obj.name === city);
@@ -37,21 +44,46 @@ export default () => {
         if (index >= 0) {
           casesPerCity[index].cases++;
         } else {
-          casesPerCity.push({ name: city, cases: 1 });
+          const cityLocation = _.findIndex(locations, location => {
+            return location.name === city;
+          });
+          const cityObject = { name: city, cases: 1 };
+
+          if (cityLocation >= 0)
+            cityObject.location = locations[cityLocation].location;
+
+          casesPerCity.push(cityObject);
         }
       });
-
-      setPacientCases(data);
-
-      const citiesWithLocation = await Promise.all(
-        casesPerCity &&
-          casesPerCity.map(async city => {
+      
+      const citiesWithOutLocation = _.filter(
+        casesPerCity,
+        city => city.location === undefined
+        );
+        
+      if (citiesWithOutLocation.length > 0) {
+        const citiesWithLocation = await Promise.all(
+          citiesWithOutLocation &&
+          citiesWithOutLocation.map(async city => {
             const location = await getGeoReference(city.name);
-            return { ...city, location };
+            const index = _.findIndex(
+              casesPerCity,
+              obj => obj.name === city.name
+              );
+              casesPerCity[index].location = location;
+              return { ...city, location };
+            })
+        );
+        
+        await Promise.all(
+          citiesWithLocation.map(async city => {
+            await createCity(_.omit(city, 'cases'));
           })
-      );
-
-      setCities(citiesWithLocation);
+          );
+      }
+      
+      setPacientCases(data);
+      setCities(casesPerCity);
     };
 
     const getData = async () => {
@@ -71,6 +103,17 @@ export default () => {
 
   const handelApiLoaded = async (map, maps, cities = []) => {
     cities.forEach(cityMap => {
+      const { cases } = cityMap;
+      const GROWTH_RATE = 800;
+      let radius;
+
+      if (cases > 20) {
+        radius = cases * GROWTH_RATE;
+      } else if (cases > 6) {
+        radius = cases * (GROWTH_RATE * 4);
+      } else {
+        radius = cases * (GROWTH_RATE * 6);
+      }
       new maps.Circle({
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,
@@ -79,7 +122,7 @@ export default () => {
         fillOpacity: 0.35,
         map: map,
         center: cityMap.location,
-        radius: cityMap.cases * 400
+        radius
       });
     });
   };
@@ -91,13 +134,19 @@ export default () => {
           <Typography variant='h6'>Coronavirux</Typography>
         </Toolbar>
       </AppBar>
-      <Grid container>
-        <Grid item xs={12} md={3}>
+      <Grid container alignContent='center' alignItems='center'>
+        <Grid item xs={12} md={5} lg={3}>
           <Paper style={{ height: '100%' }}>
             <SideBar {...{ cities, pacientCases }} />
           </Paper>
         </Grid>
-        <Grid item xs={12} md={9} style={{ height: '100vh', width: '100%' }}>
+        <Grid
+          item
+          xs={12}
+          md={7}
+          lg={9}
+          style={{ height: '100vh', width: '100%' }}
+        >
           {loading ? (
             <CircularProgress />
           ) : (

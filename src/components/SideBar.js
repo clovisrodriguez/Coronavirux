@@ -5,17 +5,74 @@ import Autocomplete from '@material-ui/lab/Autocomplete';
 import _ from 'lodash';
 import {
   RadialBarChart,
+  BarChart,
   Tooltip,
   ResponsiveContainer,
-  RadialBar
+  Bar,
+  RadialBar,
+  XAxis,
+  YAxis,
+  Line,
+  CartesianGrid,
+  Legend,
+  LineChart
 } from 'recharts';
 import Color from 'color';
 import { Card } from '@material-ui/core';
+import Divider from '@material-ui/core/Divider';
+import { makeStyles } from '@material-ui/core/styles';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    display: 'flex',
+    alignItems: 'center',
+    flexDirection: 'column'
+  },
+  boxContainer: {
+    paddingTop: '1rem',
+    paddingBottom: '1rem',
+    textAlign: 'center'
+  }
+}));
+
+const calculateCasesPerParameter = (
+  activeDataPatients,
+  parameter,
+  factor = 0.03
+) => {
+  let casesPerAgeObject = [];
+
+  activeDataPatients.forEach(pacient => {
+    const index = _.findIndex(
+      casesPerAgeObject,
+      obj => obj[parameter] === pacient[parameter]
+    );
+
+    if (index >= 0) {
+      casesPerAgeObject[index].fill = Color(casesPerAgeObject[index].fill)
+        .darken(factor)
+        .hex();
+      casesPerAgeObject[index].cases++;
+    } else {
+      const point = {
+        cases: 1,
+        fill: '#ffcdd2'
+      };
+      point[parameter] = pacient[parameter];
+      casesPerAgeObject.push(point);
+    }
+  });
+
+  return _.sortBy(casesPerAgeObject, `${parameter}`);
+};
 
 export default function SideBar({ cities = [], pacientCases }) {
+  const classes = useStyles();
   const [activeData, setActiveData] = useState(cities);
   const [totalCases, setTotalCases] = useState(0);
   const [casesPerAge, setCasesPerAge] = useState([]);
+  const [casesPerPlace, setCasesPerPlace] = useState([]);
+  const [casesPerDate, setCasesPerDate] = useState([]);
 
   useEffect(() => {
     setActiveData(cities);
@@ -27,9 +84,7 @@ export default function SideBar({ cities = [], pacientCases }) {
         return value.cases + total;
       }, 0);
 
-      let casesPerAgeObject = [];
-
-      const dataAge =
+      const activeDataPatients =
         activeData.length === 1
           ? _.filter(
               pacientCases,
@@ -37,36 +92,26 @@ export default function SideBar({ cities = [], pacientCases }) {
             )
           : pacientCases;
 
-      dataAge.forEach(pacient => {
-        const index = _.findIndex(
-          casesPerAgeObject,
-          obj => obj.range === pacient.age
-        );
-
-        if (index >= 0) {
-          casesPerAgeObject[index].fill = Color(casesPerAgeObject[index].fill)
-            .darken(0.03)
-            .hex();
-          casesPerAgeObject[index].cases++;
-        } else {
-          casesPerAgeObject.push({
-            range: pacient.age,
-            cases: 1,
-            fill: '#ffcdd2'
-          });
-        }
-      });
-
       setTotalCases(totalCases);
-      setCasesPerAge(_.sortBy(casesPerAgeObject, 'range'));
+      setCasesPerDate(
+        calculateCasesPerParameter(activeDataPatients, 'date', 0.001)
+      );
+      setCasesPerPlace(
+        calculateCasesPerParameter(activeDataPatients, 'place', 0.01)
+      );
+      setCasesPerAge(calculateCasesPerParameter(activeDataPatients, 'age'));
     };
+
     calculateCases();
   }, [activeData, pacientCases]);
 
   return (
-    <div style={{ paddingTop: '20%', paddingLeft: '5%' }}>
-      <Typography variant={'h5'}>Casos Confirmados</Typography>
-      <Typography variant={'h6'}>{totalCases}</Typography>
+    <div className={classes.root}>
+      <div className={classes.boxContainer}>
+        <Typography variant={'h5'}>Casos Confirmados</Typography>
+        <Typography variant={'h6'}>{totalCases}</Typography>
+      </div>
+      <Divider variant='middle' />
       <Autocomplete
         id='buscador'
         options={cities}
@@ -83,37 +128,86 @@ export default function SideBar({ cities = [], pacientCases }) {
           />
         )}
       />
-      <ResponsiveContainer width={300} height={300}>
-        <RadialBarChart
-          dataKey='cases'
-          data={casesPerAge}
-          innerRadius='10%'
-          outerRadius='80%'
-          startAngle={180}
-          endAngle={0}
-        >
-          <Tooltip
-            content={({ payload }) => {
-              return (
-                <Card style={{ padding: '1rem' }}>
-                  <Typography variant='caption'>
-                    {_.get(payload[0], 'payload.range', 'none') + ' Años'}
-                  </Typography>
-                  <Typography variant='body1'>
-                    {_.get(payload[0], 'value', 0) + ' Casos'}
-                  </Typography>
-                </Card>
-              );
-            }}
-          />
-          <RadialBar
-            minAngle={15}
-            background
-            clockWise={true}
+      <div className={classes.boxContainer}>
+        <Typography variant={'h6'}>Casos por edad</Typography>
+        <ResponsiveContainer width='100%' height={200}>
+          <RadialBarChart
             dataKey='cases'
-          />
-        </RadialBarChart>
-      </ResponsiveContainer>
+            data={casesPerAge}
+            innerRadius='10%'
+            outerRadius='80%'
+            startAngle={180}
+            endAngle={0}
+          >
+            <Tooltip
+              content={({ payload }) => {
+                return (
+                  <Card style={{ padding: '1rem' }}>
+                    <Typography variant='caption'>
+                      {_.get(payload[0], 'payload.age', 'none') + ' Años'}
+                    </Typography>
+                    <Typography variant='body1'>
+                      {_.get(payload[0], 'value', 0) + ' Casos'}
+                    </Typography>
+                  </Card>
+                );
+              }}
+            />
+            <RadialBar
+              minAngle={15}
+              background
+              clockWise={true}
+              dataKey='cases'
+            />
+          </RadialBarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className={classes.boxContainer} style={{ marginTop: '-6rem' }}>
+        <Typography variant={'h6'}>Lugar de Atención</Typography>
+        <div style={{ height: '1rem' }}></div>
+        <ResponsiveContainer width='100%' height={160}>
+          <BarChart data={casesPerPlace}>
+            <XAxis dataKey='place' />
+            <YAxis />
+            <Tooltip
+              content={({ payload }) => (
+                <CustomToolTip {...{ payload, prop: 'place', word: '' }} />
+              )}
+            />
+            <Bar dataKey='cases' />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+      <div className={classes.boxContainer}>
+        <Typography variant={'h6'}>Fecha del Contagio</Typography>
+        <div style={{ height: '1rem' }}></div>
+        <ResponsiveContainer width={300} height={160}>
+          <LineChart data={casesPerDate}>
+            <CartesianGrid strokeDasharray='1 1' />
+            <XAxis dataKey='name' />
+            <YAxis />
+            <Tooltip
+              content={({ payload }) => (
+                <CustomToolTip {...{ payload, prop: 'date', word: '' }} />
+              )}
+            />
+            <Line type='monotone' dataKey='cases' stroke='#e53935' />
+          </LineChart>
+        </ResponsiveContainer>
+      </div>
     </div>
   );
 }
+
+const CustomToolTip = ({ payload, prop, word }) => {
+  return (
+    <Card style={{ padding: '1rem' }}>
+      <Typography variant='caption'>
+        {_.get(payload[0], 'payload.' + prop, 'none') + ` ${word}`}
+      </Typography>
+      <Typography variant='body1'>
+        {_.get(payload[0], 'value', 0) + ' Casos'}
+      </Typography>
+    </Card>
+  );
+};

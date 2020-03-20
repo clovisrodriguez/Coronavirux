@@ -1,5 +1,14 @@
 import axios from 'axios';
 import _ from 'lodash';
+import { API, graphqlOperation } from 'aws-amplify';
+import * as mutations from '../graphql/mutations';
+import * as queries from '../graphql/queries';
+
+export const createCity = async city =>
+  await API.graphql(graphqlOperation(mutations.createCities, { input: city }));
+
+export const getCities = async () =>
+  await API.graphql(graphqlOperation(queries.listCitiess, { limit: 1000 }));
 
 export const getINSReport = async () => {
   const body = _.get(
@@ -19,7 +28,23 @@ export const getINSReport = async () => {
             confirmCaseObject.id = prop;
             break;
           case 1:
-            confirmCaseObject.date = prop;
+            const validDate = Date.parse(prop);
+            let newDate;
+            if (isNaN(validDate)) {
+              const dateParts = prop.split('/');
+              newDate = new Date(
+                +dateParts[2],
+                dateParts[1] - 1,
+                +dateParts[0]
+              );
+            } else {
+              newDate = new Date(prop);
+            }
+            confirmCaseObject.date = newDate.toLocaleDateString('en-US', {
+              day: '2-digit',
+              month: '2-digit',
+              year: 'numeric'
+            });
             break;
           case 2:
             confirmCaseObject.city = prop.replace(/\s/g, '');

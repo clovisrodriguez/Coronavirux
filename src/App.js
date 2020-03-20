@@ -3,6 +3,10 @@ import { BrowserRouter as Router, Route } from 'react-router-dom';
 import Home from './pages/Home';
 import { Provider } from 'react-redux';
 import store from './store';
+import Amplify from 'aws-amplify';
+import awsmobile from './aws-exports';
+
+Amplify.configure(awsmobile);
 
 function App() {
   return (
