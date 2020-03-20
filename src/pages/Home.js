@@ -33,10 +33,9 @@ export default () => {
 
       try {
         locations = _.get(await getCities(), 'data.listCitiess.items');
-      } catch(e) {
+      } catch (e) {
         console.log(e);
       }
-
 
       _.map(data, 'city').forEach(city => {
         const index = _.findIndex(casesPerCity, obj => obj.name === city);
@@ -55,33 +54,33 @@ export default () => {
           casesPerCity.push(cityObject);
         }
       });
-      
+
       const citiesWithOutLocation = _.filter(
         casesPerCity,
         city => city.location === undefined
-        );
-        
+      );
+
       if (citiesWithOutLocation.length > 0) {
         const citiesWithLocation = await Promise.all(
           citiesWithOutLocation &&
-          citiesWithOutLocation.map(async city => {
-            const location = await getGeoReference(city.name);
-            const index = _.findIndex(
-              casesPerCity,
-              obj => obj.name === city.name
+            citiesWithOutLocation.map(async city => {
+              const location = await getGeoReference(city.name);
+              const index = _.findIndex(
+                casesPerCity,
+                obj => obj.name === city.name
               );
               casesPerCity[index].location = location;
               return { ...city, location };
             })
         );
-        
+
         await Promise.all(
           citiesWithLocation.map(async city => {
             await createCity(_.omit(city, 'cases'));
           })
-          );
+        );
       }
-      
+
       setPacientCases(data);
       setCities(casesPerCity);
     };
@@ -114,6 +113,7 @@ export default () => {
       } else {
         radius = cases * (GROWTH_RATE * 6);
       }
+
       new maps.Circle({
         strokeColor: '#FF0000',
         strokeOpacity: 0.8,

@@ -139,9 +139,16 @@ export default function SideBar({ cities = [], pacientCases }) {
           />
         )}
       />
+      <Typography variant={'h6'}>Lugar de Atención</Typography>
       <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
-        {casesPerPlace.map((kind, index) => (
-          <DataCard {...{ title: kind.place, total: kind.cases }} key={index} />
+        {casesPerPlace.map((place, index) => (
+          <DataCard {...{ title: place.place, total: place.cases }} key={index} />
+        ))}
+      </div>
+      <Typography variant={'h6'}>Origen del caso</Typography>
+      <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
+        {casesPerOriginKind.map((kind, index) => (
+          <DataCard {...{ title: kind.originKind, total: kind.cases }} key={index} />
         ))}
       </div>
       <div className={classes.boxContainer}>
@@ -177,13 +184,14 @@ export default function SideBar({ cities = [], pacientCases }) {
           </LineChart>
         </ResponsiveContainer>
       </div>
+      <Typography variant='caption'>Uitliza el puntero para interactuar con la gráfica, datos tomados de INS</Typography>
     </div>
   );
 }
 
 const DataCard = ({ title, total }) => {
   return (
-    <div style={{ padding: '1rem', width: '150px' }}>
+    <div style={{ padding: '1rem', minWidth: '100px', flex: 1 }}>
       <Typography variant={'h5'} style={{ fontSize: '1rem' }}>
         {title}
       </Typography>
