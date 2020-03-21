@@ -103,15 +103,15 @@ export default () => {
   const handelApiLoaded = async (map, maps, cities = []) => {
     cities.forEach(cityMap => {
       const { cases } = cityMap;
-      const GROWTH_RATE = 800;
+      const GROWTH_RATE = 600;
       let radius;
 
       if (cases > 20) {
         radius = cases * GROWTH_RATE;
-      } else if (cases > 6) {
-        radius = cases * (GROWTH_RATE * 4);
+      } else if (cases > 7) {
+        radius = cases * (GROWTH_RATE * 3);
       } else {
-        radius = cases * (GROWTH_RATE * 6);
+        radius = cases * (GROWTH_RATE * 8);
       }
 
       new maps.Circle({
@@ -138,6 +138,18 @@ export default () => {
         <Grid item xs={12} md={5} lg={3}>
           <Paper style={{ height: '100%' }}>
             {!loading && <SideBar {...{ cities, pacientCases }} />}
+            <div
+              style={{
+                textAlign: 'center',
+                marginTop: '1rem',
+                marginBottom: '1rem'
+              }}
+            >
+              <Typography variant='caption'>
+                Uitliza el puntero para interactuar con la gráfica, datos
+                tomados de INS, desliza la barra para ver más datos
+              </Typography>
+            </div>
           </Paper>
         </Grid>
         <Grid

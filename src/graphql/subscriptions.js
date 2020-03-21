@@ -34,3 +34,75 @@ export const onDeleteCities = `subscription OnDeleteCities {
   }
 }
 `;
+export const onCreateUser = `subscription OnCreateUser {
+  onCreateUser {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const onUpdateUser = `subscription OnUpdateUser {
+  onUpdateUser {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const onDeleteUser = `subscription OnDeleteUser {
+  onDeleteUser {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const onCreateForm = `subscription OnCreateForm {
+  onCreateForm {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;
+export const onUpdateForm = `subscription OnUpdateForm {
+  onUpdateForm {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;
+export const onDeleteForm = `subscription OnDeleteForm {
+  onDeleteForm {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;

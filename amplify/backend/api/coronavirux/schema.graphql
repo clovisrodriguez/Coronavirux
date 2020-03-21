@@ -4,6 +4,40 @@ type cities @model {
 	location: Location!
 }
 
+type User @model {
+	id: ID!
+	firstName: String!
+	lastName: String!
+	docType: Doctype!
+	phoneNumber: String!
+	mail: String!
+	symptoms: [String]!
+	formId: String!
+}
+
+type Form @model {
+	id: ID!
+	location: Location!
+	level: Level!
+}
+
+enum Doctype {
+  CC
+  CE
+  PPN
+  SSN
+  LIC
+  NIT
+  TI
+  DNI
+}
+
+enum Level {
+	TIER_1,
+	TIER_2,
+	TIER_3
+}
+
 type Location {
 	lat: Float
 	lng: Float

@@ -4,6 +4,12 @@ import { API, graphqlOperation } from 'aws-amplify';
 import * as mutations from '../graphql/mutations';
 import * as queries from '../graphql/queries';
 
+export const createUser = async user =>
+  await API.graphql(graphqlOperation(mutations.createUser, { input: user }));
+
+export const createForm = async form =>
+  await API.graphql(graphqlOperation(mutations.createForm, { input: form }));
+
 export const createCity = async city =>
   await API.graphql(graphqlOperation(mutations.createCities, { input: city }));
 
@@ -13,7 +19,7 @@ export const getCities = async () =>
 export const getINSReport = async () => {
   const body = _.get(
     await axios.get(
-      'https://e.infogram.com/api/live/flex/0e44ab71-9a20-43ab-89b3-0e73c594668f/dfee1a5c-5cc8-4e90-8efb-d5bdf2803bf6'
+      'https://e.infogram.com/api/live/flex/bc384047-e71c-47d9-b606-1eb6a29962e3/664bc407-2569-4ab8-b7fb-9deb668ddb7a?'
     ),
     'data.data'
   );
@@ -28,18 +34,9 @@ export const getINSReport = async () => {
             confirmCaseObject.id = prop;
             break;
           case 1:
-            const validDate = Date.parse(prop);
             let newDate;
-            if (isNaN(validDate)) {
-              const dateParts = prop.split('/');
-              newDate = new Date(
-                +dateParts[2],
-                dateParts[1] - 1,
-                +dateParts[0]
-              );
-            } else {
-              newDate = new Date(prop);
-            }
+            const dateParts = prop.split('/');
+            newDate = new Date(+dateParts[2], dateParts[1] - 1, +dateParts[0]);
             confirmCaseObject.date = newDate.toLocaleDateString('en-US', {
               day: '2-digit',
               month: '2-digit',
@@ -50,7 +47,7 @@ export const getINSReport = async () => {
             confirmCaseObject.city = prop.replace(/\s/g, '');
             break;
           case 3:
-            confirmCaseObject.place = prop;
+            confirmCaseObject.place = prop.toLowerCase();
             break;
           case 4:
             confirmCaseObject.age = prop;

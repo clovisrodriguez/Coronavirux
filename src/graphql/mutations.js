@@ -43,3 +43,93 @@ export const deleteCities = `mutation DeleteCities(
   }
 }
 `;
+export const createUser = `mutation CreateUser(
+  $input: CreateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  createUser(input: $input, condition: $condition) {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const updateUser = `mutation UpdateUser(
+  $input: UpdateUserInput!
+  $condition: ModelUserConditionInput
+) {
+  updateUser(input: $input, condition: $condition) {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const deleteUser = `mutation DeleteUser(
+  $input: DeleteUserInput!
+  $condition: ModelUserConditionInput
+) {
+  deleteUser(input: $input, condition: $condition) {
+    id
+    firstName
+    lastName
+    docType
+    phoneNumber
+    mail
+    symptoms
+    formId
+  }
+}
+`;
+export const createForm = `mutation CreateForm(
+  $input: CreateFormInput!
+  $condition: ModelFormConditionInput
+) {
+  createForm(input: $input, condition: $condition) {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;
+export const updateForm = `mutation UpdateForm(
+  $input: UpdateFormInput!
+  $condition: ModelFormConditionInput
+) {
+  updateForm(input: $input, condition: $condition) {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;
+export const deleteForm = `mutation DeleteForm(
+  $input: DeleteFormInput!
+  $condition: ModelFormConditionInput
+) {
+  deleteForm(input: $input, condition: $condition) {
+    id
+    location {
+      lat
+      lng
+    }
+    level
+  }
+}
+`;

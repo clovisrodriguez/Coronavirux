@@ -23,9 +23,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
+    marginTop: '3rem',
+    overflowY: 'scroll',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    height: '70vh'
   },
   boxContainer: {
     paddingTop: '1rem',
@@ -184,7 +187,6 @@ export default function SideBar({ cities = [], pacientCases }) {
           </LineChart>
         </ResponsiveContainer>
       </div>
-      <Typography variant='caption'>Uitliza el puntero para interactuar con la gráfica, datos tomados de INS</Typography>
     </div>
   );
 }
