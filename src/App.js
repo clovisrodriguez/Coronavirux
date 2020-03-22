@@ -6,6 +6,7 @@ import store from './store';
 import Amplify from 'aws-amplify';
 import awsmobile from './aws-exports';
 import Form from './pages/form';
+import LandingPage from './pages/landing-page';
 
 Amplify.configure(awsmobile);
 
@@ -17,8 +18,11 @@ function App() {
           <Route path='/form'>
             <Form />
           </Route>
-          <Route path='/'>
+          <Route path='/statistics'>
             <Home />
+          </Route>
+          <Route exact path='/'>
+            <LandingPage />
           </Route>
         </Switch>
       </Router>

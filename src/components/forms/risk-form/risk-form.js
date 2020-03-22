@@ -1,5 +1,6 @@
 import React from 'react';
-import { FormLabel, FormControlLabel, RadioGroup, Radio, FormControl, Button, Typography } from '@material-ui/core';
+import { FormLabel, FormControlLabel, Button, Typography, FormGroup, Checkbox } from '@material-ui/core';
+import riskGroups from '../../../constants/risk-groups';
 
 const RiskForm = ({
   riskGroup,
@@ -7,24 +8,30 @@ const RiskForm = ({
   onNext,
 }) => {
 
-
-  const handleRiskGroupChange = e => {
-    setRiskGroup(e.target.value === 'true' ? true : false)
+  const handleRiskGroupChange = input => e => {
+    const risks = {...riskGroup};
+    risks[input] = !riskGroup[input];
+    setRiskGroup(risks);
   }
 
   return (
     <form autoComplete="off">
-      <FormControl margin="normal">
-        <FormLabel component="legend">
-          <Typography>
-            Perteneces a algún grupo de riesgo 60 años, hipertensión, diabetes, cardiopatías, patología pulmonar, enfermedad renal crónica, inmunosupresión, patología hepática, neoplasias activas
+      <FormLabel component="legend">
+        <Typography>
+          Perteneces a algún grupo de riesgo 60 años, hipertensión, diabetes, cardiopatías, patología pulmonar, enfermedad renal crónica, inmunosupresión, patología hepática, neoplasias activas
           </Typography>
-        </FormLabel>
-        <RadioGroup aria-label="riskGroup" name="risk-group" value={riskGroup} onChange={handleRiskGroupChange}>
-          <FormControlLabel value={true} control={<Radio />} label="Si" checked={riskGroup} />
-          <FormControlLabel value={false} control={<Radio />} label="No" checked={!riskGroup} />
-        </RadioGroup>
-      </FormControl>
+      </FormLabel>
+      <FormGroup>
+        {
+          Object.entries(riskGroups).map(([key, value]) => (
+            <FormControlLabel
+              key={`control-${key}`}
+              control={<Checkbox key={key} value={riskGroup[key]} checked={riskGroup[key]} onChange={handleRiskGroupChange(key)} name={key} />}
+              label={value}
+            />
+          ))
+        }
+      </FormGroup>
       <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext}>
         Next
       </Button>
