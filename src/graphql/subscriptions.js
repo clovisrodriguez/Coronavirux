@@ -81,6 +81,10 @@ export const onCreateForm = `subscription OnCreateForm {
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;
@@ -92,6 +96,10 @@ export const onUpdateForm = `subscription OnUpdateForm {
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;
@@ -103,6 +111,10 @@ export const onDeleteForm = `subscription OnDeleteForm {
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;

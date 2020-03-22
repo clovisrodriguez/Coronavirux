@@ -102,6 +102,10 @@ export const createForm = `mutation CreateForm(
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;
@@ -116,6 +120,10 @@ export const updateForm = `mutation UpdateForm(
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;
@@ -130,6 +138,10 @@ export const deleteForm = `mutation DeleteForm(
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;

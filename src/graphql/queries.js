@@ -71,6 +71,10 @@ export const getForm = `query GetForm($id: ID!) {
       lng
     }
     level
+    city
+    department
+    age
+    gender
   }
 }
 `;
@@ -87,6 +91,10 @@ export const listForms = `query ListForms(
         lng
       }
       level
+      city
+      department
+      age
+      gender
     }
     nextToken
   }
