@@ -21,12 +21,12 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(theme => ({
   root: {
-    marginTop: '3rem',
+    overflowX: 'hidden',
     overflowY: 'scroll',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column',
-    height: '70vh'
+    flexDirection: 'column',  
+    flex: 1,
   },
   boxContainer: {
     paddingTop: '1rem',

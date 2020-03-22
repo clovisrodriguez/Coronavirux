@@ -1,19 +1,12 @@
 import React from 'react';
 import { TextField, FormLabel, FormControlLabel, RadioGroup, Radio, FormControl, Button } from '@material-ui/core';
-
-const getGenders = () => ([
-  'hombre',
-  'mujer',
-  'no binario',
-  'prefiero no decirlo',
-]);
+import genders from '../../../constants/genders';
 
 const AdditionalDataForm = ({
   age,
   setAge,
   gender,
   setGender,
-  onBack,
   onNext,
 }) => {
 
@@ -49,19 +42,20 @@ const AdditionalDataForm = ({
           max: 100,
           type: 'number',
         }}
+        required
       />
       <FormControl margin="normal" fullWidth >
         <FormLabel component="legend">Género</FormLabel>
         <RadioGroup aria-label="gender" name="gender" value={gender} onChange={handleGenderChange}>
           {
-            getGenders().map(g => (
+            genders.map(g => (
               <FormControlLabel key={g} value={g} control={<Radio />} label={g} />
             ))
           }
         </RadioGroup>
       </FormControl>
-      <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext}>
-        Next
+      <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext} disabled={!age}>
+        Continuar
       </Button>
     </form>
   );
