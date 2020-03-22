@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormLabel, FormControlLabel, Button, Typography, FormGroup, Checkbox } from '@material-ui/core';
+import { FormLabel, FormControlLabel, Button, Typography, FormGroup, Checkbox, Container } from '@material-ui/core';
 import riskGroups from '../../../constants/risk-groups';
 
 const RiskForm = ({
@@ -9,33 +9,35 @@ const RiskForm = ({
 }) => {
 
   const handleRiskGroupChange = input => e => {
-    const risks = {...riskGroup};
+    const risks = { ...riskGroup };
     risks[input] = !riskGroup[input];
     setRiskGroup(risks);
   }
 
   return (
-    <form autoComplete="off">
-      <FormLabel component="legend">
-        <Typography>
-          Perteneces a algún grupo de riesgo 60 años, hipertensión, diabetes, cardiopatías, patología pulmonar, enfermedad renal crónica, inmunosupresión, patología hepática, neoplasias activas
+    <Container maxWidth='sm'>
+      <form autoComplete="off">
+        <FormLabel component="legend">
+          <Typography>
+            Perteneces a algún grupo de riesgo 60 años, hipertensión, diabetes, cardiopatías, patología pulmonar, enfermedad renal crónica, inmunosupresión, patología hepática, neoplasias activas
           </Typography>
-      </FormLabel>
-      <FormGroup>
-        {
-          Object.entries(riskGroups).map(([key, value]) => (
-            <FormControlLabel
-              key={`control-${key}`}
-              control={<Checkbox key={key} value={riskGroup[key]} checked={riskGroup[key]} onChange={handleRiskGroupChange(key)} name={key} />}
-              label={value}
-            />
-          ))
-        }
-      </FormGroup>
-      <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext}>
-        Next
+        </FormLabel>
+        <FormGroup>
+          {
+            Object.entries(riskGroups).map(([key, value]) => (
+              <FormControlLabel
+                key={`control-${key}`}
+                control={<Checkbox key={key} value={riskGroup[key]} checked={riskGroup[key]} onChange={handleRiskGroupChange(key)} name={key} />}
+                label={value}
+              />
+            ))
+          }
+        </FormGroup>
+        <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext}>
+          Continuar
       </Button>
-    </form>
+      </form>
+    </Container>
   );
 };
 

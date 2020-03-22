@@ -32,7 +32,7 @@ const SymthomsForm = ({
         }
       </FormGroup>
       <Button fullWidth margin="normal" variant="contained" color="primary" type="submit" onClick={onNext}>
-        Next
+        Continuar
       </Button>
     </form>
   );

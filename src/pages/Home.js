@@ -4,8 +4,6 @@ import Geocode from 'react-geocode';
 import _ from 'lodash';
 import { getINSReport, createCity, getCities } from '../api';
 
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
@@ -14,6 +12,8 @@ import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactGA from 'react-ga';
 
 import SideBar from '../components/SideBar';
+import Navbar from '../components/navbar';
+import { CssBaseline } from '@material-ui/core';
 
 const GOOGLE_MAP_KEY = 'AIzaSyAnWeyMrHdwIJovYY2hdO18aonmJIiPvCM';
 
@@ -131,14 +131,11 @@ export default () => {
 
   return (
     <Box>
-      <AppBar>
-        <Toolbar>
-          <Typography variant='h6'>Coronavirux</Typography>
-        </Toolbar>
-      </AppBar>
+      <Navbar />
+      <CssBaseline />
       <Grid container alignContent='center' alignItems='center'>
         <Grid item xs={12} md={5} lg={3}>
-          <Paper style={{ height: '100%' }}>
+          <Box style={{display: 'flex', flexDirection: 'column', maxHeight: 'calc(100vh - 64px)'}}>
             {!loading && <SideBar {...{ cities, pacientCases }} />}
             <div
               style={{
@@ -148,18 +145,18 @@ export default () => {
               }}
             >
               <Typography variant='caption'>
-                Uitliza el puntero para interactuar con la gráfica, datos
+                Utiliza el puntero para interactuar con la gráfica, datos
                 tomados de INS, desliza la barra para ver más datos
               </Typography>
             </div>
-          </Paper>
+          </Box>
         </Grid>
         <Grid
           item
           xs={12}
           md={7}
           lg={9}
-          style={{ height: '100vh', width: '100%' }}
+          style={{ height: 'calc(100vh - 64px)', width: '100%' }}
         >
           {loading ? (
             <CircularProgress />

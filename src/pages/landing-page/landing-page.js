@@ -1,20 +1,19 @@
 import React from 'react';
-import {
-  Button,
-  makeStyles,
-  Box,
-  CssBaseline,
-  AppBar,
-  Toolbar,
-  Typography
-} from '@material-ui/core';
+import { Button, makeStyles, Box, CssBaseline, AppBar, Toolbar, Typography, Container, Grid } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
-import Background from '../../img/colombia.jpg';
-import ReactGA from 'react-ga';
+import Logo from '../../img/covix.png';
+import Virus from '../../img/virus.png';
 
 const LandingPage = ({ history }) => {
-  ReactGA.pageview(window.location.pathname + window.location.search);
-  const { actionsContainer, containerBackground } = useStyles();
+  const {
+    appBar,
+    containerBackground,
+    introContainer,
+    diagContainer,
+    logo,
+    content,
+    virusContainer,
+  } = useStyles();
   const goToStatistics = () => {
     history.push('/statistics');
   };
@@ -23,40 +22,110 @@ const LandingPage = ({ history }) => {
   };
   return (
     <Box className={containerBackground}>
-      <AppBar position='relative'>
-        <Toolbar>
-          <Typography variant='h6'>Coronavirux</Typography>
-        </Toolbar>
-      </AppBar>
-      <CssBaseline />
-      <Box className={actionsContainer}>
-        <Button color='secondary' variant='contained' onClick={goToStatistics}>
-          Ver estadísticas
-        </Button>
-        <Button color='secondary' variant='contained' onClick={goToForm}>
-          Ver formulario
-        </Button>
-      </Box>
+      <Container maxWidth="lg" disableGutters>
+        <AppBar position="static" className={appBar}>
+          <Toolbar>
+            <img alt="logo" src={Logo} className={logo} />
+          </Toolbar>
+        </AppBar>
+        <CssBaseline />
+        <div className={content}>
+
+          <Grid disableGutters>
+            <Grid item md={12} className={introContainer}>
+              <Typography variant="h4" gutterBottom>
+                Quieres ayudar a combatir el covid-19?
+            </Typography>
+              <Typography variant="body1" paragraph>
+                CoronaViruX es una iniciativa local que quiere:
+            </Typography>
+              <Typography variant="body1">
+                <strong>1. </strong>Mostrar en un mapa en tiempo real casos confirmados
+            </Typography>
+              <Typography variant="body1">
+                <strong>2. </strong>Evitar que las líneas y los hospitales colapsen
+            </Typography>
+              <Typography variant="body1" paragraph>
+                <strong>3. </strong>Orientar a aquellos que sospechan que pueden estar contagiados
+            </Typography>
+            </Grid>
+            {/* <Grid item justify="center">
+            <img alt="covid-19" src={Virus} className={virusContainer} />
+          </Grid> */}
+          </Grid>
+          <Grid container disableGutters spacing={1} >
+            <Grid item xs={12} md={6}>
+              <div className={diagContainer}>
+                <Typography variant="h5" gutterBottom>
+                  Mapa
+              </Typography>
+                <Typography variant="body1" paragraph>
+                  Revisa estadísticas actualizadas con el instituto de salud de casos <strong>probables </strong>
+                y <strong>oficiales</strong>.
+              </Typography>
+                <Button color="primary" variant="contained" onClick={goToStatistics}>Ver estadísticas</Button>
+              </div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <div className={diagContainer}>
+                <Typography variant="h5" gutterBottom>
+                  Formulario
+              </Typography>
+                <Typography variant="body1" paragraph>
+                  Te pide datos necesarios para saber el estado de salud de la población por área y generar
+                sugerencias masivas <strong>sin que vayas a un hospital</strong>.
+              </Typography>
+
+                <Typography variant="body1" paragraph>
+                  Este formulario fue <strong>desarrollado junto a médicos</strong> para darte una orientación
+                precisa para que sepas qué tienes qué hacer.
+              </Typography>
+
+                <Button color="secondary" variant="contained" onClick={goToForm}>Ir al formulario</Button>
+              </div>
+            </Grid>
+          </Grid>
+        </div>
+      </Container>
     </Box>
   );
 };
 
 const useStyles = makeStyles(theme => ({
-  actionsContainer: {
-    margin: '0 auto',
-    display: 'flex',
-    flexDirection: 'column',
-    justifyContent: 'space-evenly',
-    alignItems: 'center',
-    height: '20%'
+  content: {
+    padding: '2rem',
+    paddingTop: '4rem',
+  },
+  appBar: {
+    background: 'transparent',
+    boxShadow: 'none',
+  },
+  logo: {
+    maxWidth: '150px',
   },
   containerBackground: {
-    background: 'no-repeat center center fixed',
-    backgroundImage: `linear-gradient(black, black), url('${Background}')`,
+    background: 'linear-gradient(153deg, rgba(2,0,36,1) 0%, rgba(86,126,255,1) 43%, rgba(212,222,255,1) 100%)',
     backgroundSize: 'cover',
     backgroundBlendMode: 'saturation',
-    height: '100vh'
-  }
+    height: '100%',
+    minHeight: '100vh',
+  },
+  introContainer: {
+    color: '#fff9e7',
+    padding: '2rem',
+    height: '100%',
+  },
+  diagContainer: {
+    color: '#fff9e7',
+    background: 'rgba(0, 0, 0, 0.2)',
+    padding: '2rem',
+    height: '100%',
+  },
+  virusContainer: {
+    maxWidth: '100%',
+    height: 'auto',
+    padding: '2rem',
+  },
 }));
 
 export default withRouter(LandingPage);

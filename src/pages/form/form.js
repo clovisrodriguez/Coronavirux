@@ -1,20 +1,16 @@
 import React, { lazy, useState, Suspense } from 'react';
 import {
-  AppBar,
-  Toolbar,
-  Typography,
   CssBaseline,
   Container,
   makeStyles,
-  CircularProgress
+  CircularProgress,
+  Paper
 } from '@material-ui/core';
-import riskGroups from '../../constants/risk-groups';
-import epidemiologicalCriteria from '../../constants/epidemiological-criteria';
-import fullAgeSeverities from '../../constants/fa-severities';
-import symthomsCriteria from '../../constants/synthoms-criteria';
-import SeverityMinorAgeForm from '../../components/forms/severity-minor-age-form';
-import minorAgeSeverities from '../../constants/ma-severities.';
 import ReactGA from 'react-ga';
+import SymthomsIntro from '../../components/intros/symthoms-intro/symthoms-intro';
+import { initRiksGroup, initEdp, initFASeverity, initMASeverity, initSymthoms } from '../../helpers/initLocalStates';
+import Navbar from '../../components/navbar';
+
 
 const PersonalFormIntro = lazy(() =>
   import('../../components/intros/personal-form-intro')
@@ -34,49 +30,27 @@ const EpdCriteriaForm = lazy(() =>
 const SeverityFullAgeForm = lazy(() =>
   import('../../components/forms/severity-full-age-form')
 );
+const SeverityMinorAgeForm = lazy(() =>
+  import('../../components/forms/severity-minor-age-form')
+);
 const SymthomsForm = lazy(() =>
   import('../../components/forms/symthoms-form/symthoms-form')
 );
 
 const Form = () => {
   ReactGA.pageview(window.location.pathname + window.location.search);
-  const { container } = useStyles();
+  const { container, paper } = useStyles();
   const [location, setLocation] = useState(null);
   const [step, setStep] = useState(0);
   const [city, setCity] = useState('');
   const [gender, setGender] = useState('hombre');
-  const [age, setAge] = useState(20);
+  const [age, setAge] = useState(18);
   const [department, setDepartment] = useState('');
-  const [riskGroup, setRiskGroup] = useState(
-    Object.entries(riskGroups).reduce((acc, [key]) => {
-      acc[key] = false;
-      return acc;
-    }, {})
-  );
-  const [epdCriteria, setEpdCriteria] = useState(
-    Object.entries(epidemiologicalCriteria).reduce((acc, [key]) => {
-      acc[key] = false;
-      return acc;
-    }, {})
-  );
-  const [faSeverity, setFASeverity] = useState(
-    Object.entries(fullAgeSeverities).reduce((acc, [key]) => {
-      acc[key] = false;
-      return acc;
-    }, {})
-  );
-  const [maSeverity, setMASeverity] = useState(
-    Object.entries(minorAgeSeverities).reduce((acc, [key]) => {
-      acc[key] = false;
-      return acc;
-    }, {})
-  );
-  const [symthoms, setSymthoms] = useState(
-    Object.entries(symthomsCriteria).reduce((acc, [key]) => {
-      acc[key] = false;
-      return acc;
-    }, {})
-  );
+  const [riskGroup, setRiskGroup] = useState(initRiksGroup);
+  const [epdCriteria, setEpdCriteria] = useState(initEdp);
+  const [faSeverity, setFASeverity] = useState(initFASeverity);
+  const [maSeverity, setMASeverity] = useState(initMASeverity);
+  const [symthoms, setSymthoms] = useState(initSymthoms);
 
   const isMinorAge = age => age < 18;
   const isMainStep = step => step < 6;
@@ -132,13 +106,17 @@ const Form = () => {
         />
       ),
       7: () => (
+        <SymthomsIntro
+          onNext={nextStep}
+        />),
+      8: () => (
         <SymthomsForm
           symthoms={symthoms}
           setSymthoms={setSymthoms}
           onNext={nextStep}
         />
       ),
-      8: () => (
+      9: () => (
         <Summary
           department={department}
           city={city}
@@ -161,13 +139,17 @@ const Form = () => {
         />
       ),
       7: () => (
+        <SymthomsIntro
+          onNext={nextStep}
+        />),
+      8: () => (
         <SymthomsForm
           symthoms={symthoms}
           setSymthoms={setSymthoms}
           onNext={nextStep}
         />
       ),
-      8: () => (
+      9: () => (
         <Summary
           {...{
             department,
@@ -196,13 +178,11 @@ const Form = () => {
   return (
     <>
       <CssBaseline />
-      <AppBar position='relative'>
-        <Toolbar>
-          <Typography variant='h6'>Reconocimiento</Typography>
-        </Toolbar>
-      </AppBar>
+      <Navbar />
       <Container maxWidth='sm' className={container}>
-        <Suspense fallback={<CircularProgress />}>{getForm(step)}</Suspense>
+        <Paper elevation={3} className={paper}>
+          <Suspense fallback={<CircularProgress />}>{getForm(step)}</Suspense>
+        </Paper>
       </Container>
     </>
   );
@@ -210,8 +190,16 @@ const Form = () => {
 
 const useStyles = makeStyles(theme => ({
   container: {
-    padding: '1rem'
-  }
+    padding: '1rem',
+  },
+  paper: {
+    padding: '2rem 2rem 1rem 2rem ',
+    minHeight: '600px',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 }));
 
 export default Form;
