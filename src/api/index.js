@@ -47,18 +47,21 @@ export const getINSReport = async () => {
             confirmCaseObject.city = prop.replace(/\s/g, '');
             break;
           case 3:
-            confirmCaseObject.place = prop.toLowerCase();
+            confirmCaseObject.deparment = prop.toLowerCase();
             break;
           case 4:
-            confirmCaseObject.age = prop;
+            confirmCaseObject.place = prop.toLowerCase();
             break;
           case 5:
-            confirmCaseObject.sex = prop;
+            confirmCaseObject.age = prop;
             break;
           case 6:
-            confirmCaseObject.originKind = prop;
+            confirmCaseObject.sex = prop;
             break;
           case 7:
+            confirmCaseObject.originKind = prop;
+            break;
+          case 8:
             confirmCaseObject.origin = prop;
             break;
           default:

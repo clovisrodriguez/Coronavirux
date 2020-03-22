@@ -1,26 +1,24 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import { Typography, Container, Button } from '@material-ui/core';
 import LinearProgress from '@material-ui/core/LinearProgress';
 
 const PersonalFormIntro = ({ location, setLocation, onNext }) => {
-  useEffect(() => {
-    console.log('im running')
+  const getLocationFroWebBrowser = () => {
     if (navigator.geolocation) {
-      console.log('im running 2')
       navigator.geolocation.getCurrentPosition(position => {
-        console.log(position);
         setLocation({
           lat: position.coords.latitude,
           lng: position.coords.longitude
-        })}
-      );
+        });
+      });
     } else {
       setLocation({
         lat: 0.0,
         lng: 0.0
       });
     }
-  }, [setLocation]);
+  };
+
   return (
     <Container maxWidth='xs'>
       <Typography align='center'>
@@ -32,13 +30,23 @@ const PersonalFormIntro = ({ location, setLocation, onNext }) => {
         variant='contained'
         color='secondary'
         onClick={onNext}
-        disabled={!location}
+        // disabled={!location}
       >
         Comencemos
       </Button>
       {!location && <LinearProgress />}
+      <Button
+        fullWidth
+        variant='contained'
+        color='secondary'
+        onClick={getLocationFroWebBrowser}
+        // disabled={location} unccoment for produc
+      >
+        Activar localización
+      </Button>
       <Typography align='center' variant='caption'>
-        Porfavor habilita tu localización para iniciar el test, si tienes problemas para iniciar recarga la página
+        Porfavor habilita tu localización para iniciar el test, si tienes
+        problemas para iniciar recarga la página
       </Typography>
     </Container>
   );

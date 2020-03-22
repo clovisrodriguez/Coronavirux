@@ -4,12 +4,24 @@ import _ from 'lodash';
 import fullAgeSeverities from '../../../constants/fa-severities';
 import symthomsCriteria from '../../../constants/synthoms-criteria';
 import minorAgeSeverities from '../../../constants/ma-severities.';
+import tierTexts from '../../../constants/tier-texts';
 import { createForm } from '../../../api';
+import { makeStyles } from '@material-ui/core/styles';
 
+const TIER_0 = 'TIER_0';
 const TIER_1 = 'TIER_1';
 const TIER_2 = 'TIER_2';
 const TIER_3 = 'TIER_3';
 const TIER_4 = 'TIER_4';
+
+const useStyles = makeStyles(theme => ({
+  root: {
+    textAlign: 'center'
+  },
+  paragraph: {
+    margin: '1rem'
+  }
+}));
 
 const Summary = ({
   department,
@@ -24,6 +36,7 @@ const Summary = ({
 }) => {
   const [tier, setTier] = useState(null);
   const [content, setContent] = useState(<div>resultados no disponibles</div>);
+  const classes = useStyles();
 
   const calculateOneTrueCriteria = criteriaList =>
     _.find(criteriaList, criteria => criteria) || false;
@@ -53,48 +66,48 @@ const Summary = ({
         riskScore ? setTier(TIER_4) : setTier(TIER_3);
       } else if (severityScore >= 1 && symptomsScore >= 1) {
         setTier(TIER_2);
-      } else {
+      } else if (!epdScore && severityScore === 0 && symptomsScore >= 1) {
         setTier(TIER_1);
+      } else {
+        setTier(TIER_0);
       }
+
+      const contentObject = tier => (
+        <div>
+          <Typography variant='h5'>{tierTexts[tier].text}</Typography>
+          {tierTexts[tier].paragraph.map((text, key) => (
+            <Typography className={classes.paragraph} variant='body1' key={key}>
+              {text}
+            </Typography>
+          ))}
+          {tierTexts[tier].emergencyLine.map((text, key) => (
+            <Typography className={classes.paragraph} variant='body2' key={key}>
+              {text}
+            </Typography>
+          ))}
+        </div>
+      );
 
       switch (tier) {
         case TIER_1:
-          setContent(
-            <Typography variant='h5'>
-              BAJA PROBABILIDAD DE ESTAR CONTAGIADO CON COVID-19, ES MAS
-              PROBABLE QUE TENGA UNA ENFERMEDAD RESPIRATORIA LEVE, REQUIERE
-              CUIDADO EN CASA.
-            </Typography>
-          );
+          setContent(contentObject(TIER_1));
           break;
         case TIER_2:
-          setContent(
-            <Typography variant='h5'>
-              ES PROBABLE QUE ESTE CONTAGIADO CON COVID-19 Y DEBE COMUNICARSE
-              CON SU EMPRESA PRESTADORA DE SERVICIOS.
-            </Typography>
-          );
+          setContent(contentObject(TIER_2));
           break;
         case TIER_3:
-          setContent(
-            <Typography variant='h5'>
-              ES PROBABLE QUE ESTE CONTAGIADO CON COVID-19 Y DEBE IR A UN
-              HOSPITAL.
-            </Typography>
-          );
+          setContent(contentObject(TIER_3));
+          break;
+        case TIER_4:
+          setContent(contentObject(TIER_4));
           break;
         default:
-          setContent(
-            <Typography variant='h5'>
-              ES PROBABLE QUE ESTE CONTAGIADO CON COVID-19 Y DEBE IR A UN
-              HOSPITAL, PERTENECE A UN GRUPO DE RIESGO QUE PUEDE EMPEORAR SU
-              CONDICIÓN.
-            </Typography>
-          );
+          setContent(contentObject(TIER_0));
       }
     };
     evaluatedForm();
-    tier && createForm({ city, department, level: tier, location, age, gender });
+    tier &&
+      createForm({ city, department, level: tier, location, age, gender });
   }, [
     department,
     city,
@@ -105,12 +118,15 @@ const Summary = ({
     epdCriteria,
     severity,
     symthoms,
-    tier
+    tier,
+    classes
   ]);
 
   return (
-    <Container>
-      <Typography variant='h2'>Resumen</Typography>
+    <Container className={classes.root}>
+      <Typography variant='h2' className={classes.paragraph}>
+        Resumen
+      </Typography>
       {content}
     </Container>
   );

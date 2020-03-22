@@ -8,12 +8,10 @@ import {
   Tooltip,
   ResponsiveContainer,
   Bar,
-  RadialBar,
   XAxis,
   YAxis,
   Line,
   CartesianGrid,
-  Legend,
   LineChart
 } from 'recharts';
 import Color from 'color';
