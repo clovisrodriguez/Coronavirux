@@ -11,6 +11,7 @@ import Box from '@material-ui/core/Box';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import ReactGA from 'react-ga';
 
 import SideBar from '../components/SideBar';
 
@@ -21,6 +22,7 @@ Geocode.setLanguage('es');
 Geocode.setRegion('co');
 
 export default () => {
+  ReactGA.pageview(window.location.pathname + window.location.search);
   const [cities, setCities] = useState([]);
   const [pacientCases, setPacientCases] = useState([]);
   const [loading, setLoading] = useState(false);

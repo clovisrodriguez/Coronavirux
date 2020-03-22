@@ -7,8 +7,10 @@ import Amplify from 'aws-amplify';
 import awsmobile from './aws-exports';
 import Form from './pages/form';
 import LandingPage from './pages/landing-page';
+import ReactGA from 'react-ga';
 
 Amplify.configure(awsmobile);
+ReactGA.initialize('G-K8CYJ27ZQT');
 
 function App() {
   return (

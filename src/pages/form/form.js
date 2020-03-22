@@ -14,6 +14,7 @@ import fullAgeSeverities from '../../constants/fa-severities';
 import symthomsCriteria from '../../constants/synthoms-criteria';
 import SeverityMinorAgeForm from '../../components/forms/severity-minor-age-form';
 import minorAgeSeverities from '../../constants/ma-severities.';
+import ReactGA from 'react-ga';
 
 const PersonalFormIntro = lazy(() =>
   import('../../components/intros/personal-form-intro')
@@ -38,6 +39,7 @@ const SymthomsForm = lazy(() =>
 );
 
 const Form = () => {
+  ReactGA.pageview(window.location.pathname + window.location.search);
   const { container } = useStyles();
   const [location, setLocation] = useState(null);
   const [step, setStep] = useState(0);
