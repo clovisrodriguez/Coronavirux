@@ -10,7 +10,7 @@ import LandingPage from './pages/landing-page';
 import ReactGA from 'react-ga';
 
 Amplify.configure(awsmobile);
-ReactGA.initialize('G-K8CYJ27ZQT');
+ReactGA.initialize('UA-161598004-1');
 
 function App() {
   return (
