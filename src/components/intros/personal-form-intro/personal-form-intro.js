@@ -30,7 +30,7 @@ const PersonalFormIntro = ({ location, setLocation, onNext }) => {
         variant='contained'
         color='secondary'
         onClick={onNext}
-        // disabled={!location}
+        disabled={!location}
       >
         Comencemos
       </Button>
@@ -40,7 +40,7 @@ const PersonalFormIntro = ({ location, setLocation, onNext }) => {
         variant='contained'
         color='secondary'
         onClick={getLocationFromWebBrowser}
-        // disabled={location} unccoment for produc
+        disabled={location}
       >
         Activar localización
       </Button>

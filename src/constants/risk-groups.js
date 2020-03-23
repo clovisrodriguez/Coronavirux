@@ -1,4 +1,5 @@
 const riskGroups = {
+  overSixties: 'Mayor a 60',
   hypertension: 'Hipertensión',
   diabetes: 'Diabetes',
   pregnancy: 'Embarazo',

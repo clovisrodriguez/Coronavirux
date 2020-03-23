@@ -11,5 +11,18 @@
             "StackId": "arn:aws:cloudformation:us-east-2:036917629170:stack/amplify-coronavirux-dev-140513/68ab9380-694b-11ea-96eb-0672668ff2ce",
             "AmplifyAppId": "d2zsgoammn5j2x"
         }
+    },
+    "prod": {
+        "awscloudformation": {
+            "AuthRoleName": "amplify-coronavirux-prod-183007-authRole",
+            "UnauthRoleArn": "arn:aws:iam::036917629170:role/amplify-coronavirux-prod-183007-unauthRole",
+            "AuthRoleArn": "arn:aws:iam::036917629170:role/amplify-coronavirux-prod-183007-authRole",
+            "Region": "us-east-2",
+            "DeploymentBucketName": "amplify-coronavirux-prod-183007-deployment",
+            "UnauthRoleName": "amplify-coronavirux-prod-183007-unauthRole",
+            "StackName": "amplify-coronavirux-prod-183007",
+            "StackId": "arn:aws:cloudformation:us-east-2:036917629170:stack/amplify-coronavirux-prod-183007/12d99e00-6c95-11ea-9db2-06faea3c34dc",
+            "AmplifyAppId": "d2zsgoammn5j2x"
+        }
     }
 }

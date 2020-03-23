@@ -19,7 +19,8 @@ const useStyles = makeStyles(theme => ({
     textAlign: 'center'
   },
   paragraph: {
-    margin: '1rem'
+    margin: '1rem',
+    wordBreak: 'break-word'
   }
 }));
 

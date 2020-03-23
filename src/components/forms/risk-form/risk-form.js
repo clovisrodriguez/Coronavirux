@@ -19,7 +19,7 @@ const RiskForm = ({
       <form autoComplete="off">
         <FormLabel component="legend">
           <Typography>
-            Perteneces a algún grupo de riesgo 60 años, hipertensión, diabetes, cardiopatías, patología pulmonar, enfermedad renal crónica, inmunosupresión, patología hepática, neoplasias activas
+            Perteneces a algún grupo de riesgo, si no puedes continuar sin marcar ninguna casilla:
           </Typography>
         </FormLabel>
         <FormGroup>
