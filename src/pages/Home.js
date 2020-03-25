@@ -8,7 +8,11 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
+import Hidden from '@material-ui/core/Hidden';
 import ReactGA from 'react-ga';
+import BarChartIcon from '@material-ui/icons/BarChart';
+import { Fab } from '@material-ui/core';
+import CloseIcon from '@material-ui/icons/Close';
 
 import SideBar from '../components/SideBar';
 import Navbar from '../components/navbar';
@@ -26,6 +30,7 @@ export default () => {
   const [cities, setCities] = useState([]);
   const [pacientCases, setPacientCases] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [showStats, setShowStats] = useState(false);
 
   useEffect(() => {
     const organiceCity = async () => {
@@ -136,29 +141,31 @@ export default () => {
       <Navbar />
       <CssBaseline />
       <Grid container alignContent='center' alignItems='center'>
-        <Grid item xs={12} md={5} lg={3}>
-          <Box
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              maxHeight: 'calc(100vh - 64px)'
-            }}
-          >
-            {!loading && <SideBar {...{ cities, pacientCases }} />}
-            <div
+        <Hidden smDown={!showStats}>
+          <Grid item xs={12} md={5} lg={3}>
+            <Box
               style={{
-                textAlign: 'center',
-                marginTop: '1rem',
-                marginBottom: '1rem'
+                display: 'flex',
+                flexDirection: 'column',
+                maxHeight: 'calc(100vh - 64px)'
               }}
             >
-              <Typography variant='caption'>
-                Utiliza el puntero para interactuar con la gráfica, datos
-                tomados de INS, desliza la barra para ver más datos
-              </Typography>
-            </div>
-          </Box>
-        </Grid>
+              {!loading && <SideBar {...{ cities, pacientCases }} />}
+              <div
+                style={{
+                  textAlign: 'center',
+                  marginTop: '1rem',
+                  marginBottom: '1rem'
+                }}
+              >
+                <Typography variant='caption'>
+                  Utiliza el puntero para interactuar con la gráfica, datos
+                  tomados de INS, desliza la barra para ver más datos
+                </Typography>
+              </div>
+            </Box>
+          </Grid>
+        </Hidden>
         <Grid
           item
           xs={12}
@@ -166,6 +173,22 @@ export default () => {
           lg={9}
           style={{ height: 'calc(100vh - 64px)', width: '100%' }}
         >
+          <Hidden only={['md', 'lg', 'xl']}>
+            <Fab
+              color='primary'
+              aria-label='estadísticas'
+              size='medium'
+              style={{
+                position: 'fixed',
+                top: '4rem',
+                zIndex: 1,
+                left: '5%',
+              }}
+              onClick={() => setShowStats(!showStats)}
+            >
+              {showStats ? <CloseIcon /> : <BarChartIcon />}
+            </Fab>
+          </Hidden>
           {loading ? (
             <CircularProgress />
           ) : (

@@ -25,14 +25,14 @@ const useStyles = makeStyles(theme => ({
     overflowY: 'scroll',
     display: 'flex',
     alignItems: 'center',
-    flexDirection: 'column',  
-    flex: 1,
+    flexDirection: 'column',
+    flex: 1
   },
   boxContainer: {
-    paddingTop: '1rem',
-    paddingBottom: '1rem',
+    display: 'flex',
+    flexDirection: 'column',
     textAlign: 'center',
-    height: '16rem'
+    minHeight: '14rem'
   },
   pointCardContainer: {
     display: 'flex'
@@ -107,7 +107,9 @@ export default function SideBar({ cities = [], pacientCases }) {
       setCasesPerPlace(
         calculateCasesPerParameter(activeDataPatients, 'place', 0.01)
       );
-      setCasesPerAge(calculateCasesPerParameter(activeDataPatients, 'age', 0.01));
+      setCasesPerAge(
+        calculateCasesPerParameter(activeDataPatients, 'age', 0.01)
+      );
     };
 
     calculateCases();
@@ -115,43 +117,57 @@ export default function SideBar({ cities = [], pacientCases }) {
 
   return (
     <div className={classes.root}>
-      <div className={classes.boxContainer}>
+      <div className={classes.boxContainer} style={{marginTop: '4rem'}}>
         <Typography variant={'h5'}>Casos Confirmados</Typography>
         <Typography
           variant={'h6'}
-          style={{ fontWeigth: 900, color: '#e53935', fontSize: '2rem' }}
+          style={{
+            fontWeigth: 900,
+            color: '#e53935',
+            fontSize: '2rem',
+          }}
         >
           {totalCases}
         </Typography>
+        <Autocomplete
+          id='buscador'
+          options={_.sortBy(cities, 'name')}
+          getOptionLabel={option => option.name}
+          style={{ width: 300 }}
+          onChange={(event, value) =>
+            value ? setActiveData([value]) : setActiveData(cities)
+          }
+          renderInput={params => (
+            <TextField
+              {...params}
+              label='Resultados por ciudad'
+              variant='outlined'
+            />
+          )}
+        />
       </div>
       <Divider variant='middle' />
-      <Autocomplete
-        id='buscador'
-        options={cities}
-        getOptionLabel={option => option.name}
-        style={{ width: 300 }}
-        onChange={(event, value) =>
-          value ? setActiveData([value]) : setActiveData(cities)
-        }
-        renderInput={params => (
-          <TextField
-            {...params}
-            label='Resultados por ciudad'
-            variant='outlined'
-          />
-        )}
-      />
-      <Typography variant={'h6'}>Estado Actual</Typography>
-      <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
-        {casesPerPlace.map((place, index) => (
-          <DataCard {...{ title: place.place, total: place.cases }} key={index} />
-        ))}
+      <div className={classes.boxContainer}>
+        <Typography variant={'h6'}>Estado Actual</Typography>
+        <div className={classes.pointCardContainer}>
+          {casesPerPlace.map((place, index) => (
+            <DataCard
+              {...{ title: place.place, total: place.cases }}
+              key={index}
+            />
+          ))}
+        </div>
       </div>
-      <Typography variant={'h6'}>Origen del caso</Typography>
-      <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
-        {casesPerOriginKind.map((kind, index) => (
-          <DataCard {...{ title: kind.originKind, total: kind.cases }} key={index} />
-        ))}
+      <div className={classes.boxContainer}>
+        <Typography variant={'h6'}>Origen del caso</Typography>
+        <div className={classes.pointCardContainer}>
+          {casesPerOriginKind.map((kind, index) => (
+            <DataCard
+              {...{ title: kind.originKind, total: kind.cases }}
+              key={index}
+            />
+          ))}
+        </div>
       </div>
       <div className={classes.boxContainer}>
         <Typography variant={'h6'}>Casos por Edad</Typography>

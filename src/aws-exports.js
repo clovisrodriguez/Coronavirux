@@ -2,13 +2,13 @@
 
 const awsmobile = {
     "aws_project_region": "us-east-2",
-    "aws_content_delivery_bucket": "coronavirux-prod",
+    "aws_content_delivery_bucket": "coronavirux-dev",
     "aws_content_delivery_bucket_region": "us-east-2",
-    "aws_content_delivery_url": "https://d2e92edyqo160s.cloudfront.net",
-    "aws_appsync_graphqlEndpoint": "https://2sgz74cx2vdpddbyrmxzcv4beu.appsync-api.us-east-2.amazonaws.com/graphql",
+    "aws_content_delivery_url": "https://d2atxpee8rx4yf.cloudfront.net",
+    "aws_appsync_graphqlEndpoint": "https://kdleg62agzdrpmhb3msbuiakeu.appsync-api.us-east-2.amazonaws.com/graphql",
     "aws_appsync_region": "us-east-2",
     "aws_appsync_authenticationType": "API_KEY",
-    "aws_appsync_apiKey": "da2-4mjq4nnuqvcgdgb4efaajzg42u"
+    "aws_appsync_apiKey": "da2-tavm2ihcr5eunh55r2eqf2yanq"
 };
 
 
