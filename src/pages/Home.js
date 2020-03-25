@@ -50,12 +50,13 @@ export default () => {
           const cityLocation = _.findIndex(locations, location => {
             return location.name === city;
           });
+
           const cityObject = { name: city, cases: 1 };
 
           if (cityLocation >= 0)
             cityObject.location = locations[cityLocation].location;
 
-          casesPerCity.push(cityObject);
+          if (city) casesPerCity.push(cityObject);
         }
       });
 
@@ -63,6 +64,8 @@ export default () => {
         casesPerCity,
         city => city.location === undefined
       );
+
+      debugger;
 
       if (citiesWithOutLocation.length > 0) {
         const citiesWithLocation = await Promise.all(
@@ -179,7 +182,7 @@ export default () => {
                 position: 'fixed',
                 top: '4rem',
                 zIndex: 1,
-                left: '5%',
+                left: '5%'
               }}
               onClick={() => setShowStats(!showStats)}
             >
