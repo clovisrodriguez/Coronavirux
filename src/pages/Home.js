@@ -6,7 +6,6 @@ import { getINSReport, createCity, getCities } from '../api';
 
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import ReactGA from 'react-ga';
@@ -21,8 +20,9 @@ Geocode.setApiKey(GOOGLE_MAP_KEY);
 Geocode.setLanguage('es');
 Geocode.setRegion('co');
 
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 export default () => {
-  ReactGA.pageview(window.location.pathname + window.location.search);
   const [cities, setCities] = useState([]);
   const [pacientCases, setPacientCases] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -105,15 +105,17 @@ export default () => {
   const handelApiLoaded = async (map, maps, cities = []) => {
     cities.forEach(cityMap => {
       const { cases } = cityMap;
-      const GROWTH_RATE = 600;
+      const GROWTH_RATE = 400;
       let radius;
 
-      if (cases > 20) {
+      if (cases > 40) {
         radius = cases * GROWTH_RATE;
+      } else if (cases > 20) {
+        radius = cases * (GROWTH_RATE * 2);
       } else if (cases > 7) {
-        radius = cases * (GROWTH_RATE * 3);
+        radius = cases * (GROWTH_RATE * 5);
       } else {
-        radius = cases * (GROWTH_RATE * 8);
+        radius = cases * (GROWTH_RATE * 10);
       }
 
       new maps.Circle({
@@ -135,7 +137,13 @@ export default () => {
       <CssBaseline />
       <Grid container alignContent='center' alignItems='center'>
         <Grid item xs={12} md={5} lg={3}>
-          <Box style={{display: 'flex', flexDirection: 'column', maxHeight: 'calc(100vh - 64px)'}}>
+          <Box
+            style={{
+              display: 'flex',
+              flexDirection: 'column',
+              maxHeight: 'calc(100vh - 64px)'
+            }}
+          >
             {!loading && <SideBar {...{ cities, pacientCases }} />}
             <div
               style={{

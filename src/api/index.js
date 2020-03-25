@@ -36,8 +36,7 @@ export const getINSReport = async () => {
           case 1:
             let newDate;
             const dateParts = prop.split('/');
-            console.log(dateParts);
-            newDate = new Date(2020, parseInt(dateParts[0]) - 1, parseInt(dateParts[1]));
+            newDate = new Date(parseInt(dateParts[2]), parseInt(dateParts[1]) - 1, parseInt(dateParts[0]));
             confirmCaseObject.date = newDate.toLocaleDateString('en-US', {
               day: '2-digit',
               month: '2-digit',

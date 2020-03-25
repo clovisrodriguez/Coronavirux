@@ -31,7 +31,8 @@ const useStyles = makeStyles(theme => ({
   boxContainer: {
     paddingTop: '1rem',
     paddingBottom: '1rem',
-    textAlign: 'center'
+    textAlign: 'center',
+    height: '16rem'
   },
   pointCardContainer: {
     display: 'flex'
@@ -106,7 +107,7 @@ export default function SideBar({ cities = [], pacientCases }) {
       setCasesPerPlace(
         calculateCasesPerParameter(activeDataPatients, 'place', 0.01)
       );
-      setCasesPerAge(calculateCasesPerParameter(activeDataPatients, 'age'));
+      setCasesPerAge(calculateCasesPerParameter(activeDataPatients, 'age', 0.01));
     };
 
     calculateCases();
@@ -140,7 +141,7 @@ export default function SideBar({ cities = [], pacientCases }) {
           />
         )}
       />
-      <Typography variant={'h6'}>Lugar de Atención</Typography>
+      <Typography variant={'h6'}>Estado Actual</Typography>
       <div className={`${classes.boxContainer} ${classes.pointCardContainer}`}>
         {casesPerPlace.map((place, index) => (
           <DataCard {...{ title: place.place, total: place.cases }} key={index} />

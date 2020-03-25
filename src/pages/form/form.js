@@ -8,9 +8,14 @@ import {
 } from '@material-ui/core';
 import ReactGA from 'react-ga';
 import SymthomsIntro from '../../components/intros/symthoms-intro/symthoms-intro';
-import { initRiksGroup, initEdp, initFASeverity, initMASeverity, initSymthoms } from '../../helpers/initLocalStates';
+import {
+  initRiksGroup,
+  initEdp,
+  initFASeverity,
+  initMASeverity,
+  initSymthoms
+} from '../../helpers/initLocalStates';
 import Navbar from '../../components/navbar';
-
 
 const PersonalFormIntro = lazy(() =>
   import('../../components/intros/personal-form-intro')
@@ -37,8 +42,9 @@ const SymthomsForm = lazy(() =>
   import('../../components/forms/symthoms-form/symthoms-form')
 );
 
+ReactGA.pageview(window.location.pathname + window.location.search);
+
 const Form = () => {
-  ReactGA.pageview(window.location.pathname + window.location.search);
   const { container, paper } = useStyles();
   const [location, setLocation] = useState(null);
   const [step, setStep] = useState(0);
@@ -51,6 +57,8 @@ const Form = () => {
   const [faSeverity, setFASeverity] = useState(initFASeverity);
   const [maSeverity, setMASeverity] = useState(initMASeverity);
   const [symthoms, setSymthoms] = useState(initSymthoms);
+  const [phone, setPhone] = useState('');
+  const [mail, setMail] = useState('');
 
   const isMinorAge = age => age < 18;
   const isMainStep = step => step < 6;
@@ -74,10 +82,16 @@ const Form = () => {
       ),
       2: () => (
         <AdditionalDataForm
-          age={age}
-          setAge={setAge}
-          gender={gender}
-          setGender={setGender}
+          {...{
+            age,
+            setAge,
+            gender,
+            setGender,
+            phone,
+            setPhone,
+            mail,
+            setMail
+          }}
           onNext={nextStep}
         />
       ),
@@ -105,10 +119,7 @@ const Form = () => {
           onNext={nextStep}
         />
       ),
-      7: () => (
-        <SymthomsIntro
-          onNext={nextStep}
-        />),
+      7: () => <SymthomsIntro onNext={nextStep} />,
       8: () => (
         <SymthomsForm
           symthoms={symthoms}
@@ -127,6 +138,8 @@ const Form = () => {
           severity={faSeverity}
           symthoms={symthoms}
           location={location}
+          phone={phone}
+          mail={mail}
         />
       )
     };
@@ -138,10 +151,7 @@ const Form = () => {
           onNext={nextStep}
         />
       ),
-      7: () => (
-        <SymthomsIntro
-          onNext={nextStep}
-        />),
+      7: () => <SymthomsIntro onNext={nextStep} />,
       8: () => (
         <SymthomsForm
           symthoms={symthoms}
@@ -151,17 +161,17 @@ const Form = () => {
       ),
       9: () => (
         <Summary
-          {...{
-            department,
-            city,
-            location,
-            age,
-            gender,
-            riskGroup,
-            epdCriteria,
-            maSeverity,
-            symthoms
-          }}
+          department={department}
+          city={city}
+          age={age}
+          gender={gender}
+          riskGroup={riskGroup}
+          epdCriteria={epdCriteria}
+          severity={faSeverity}
+          symthoms={symthoms}
+          location={location}
+          phone={phone}
+          mail={mail}
         />
       )
     };
@@ -190,7 +200,7 @@ const Form = () => {
 
 const useStyles = makeStyles(theme => ({
   container: {
-    padding: '1rem',
+    padding: '1rem'
   },
   paper: {
     padding: '2rem 2rem 1rem 2rem ',
@@ -198,8 +208,8 @@ const useStyles = makeStyles(theme => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'center',
-    alignItems: 'center',
-  },
+    alignItems: 'center'
+  }
 }));
 
 export default Form;

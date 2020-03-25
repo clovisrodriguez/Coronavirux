@@ -27,6 +27,8 @@ const useStyles = makeStyles(theme => ({
 const Summary = ({
   department,
   city,
+  phone,
+  mail,
   age,
   gender,
   riskGroup,
@@ -108,9 +110,20 @@ const Summary = ({
     };
     evaluatedForm();
     tier &&
-      createForm({ city, department, level: tier, location, age, gender });
+      createForm({
+        city,
+        department,
+        level: tier,
+        location,
+        age,
+        gender,
+        mail,
+        phoneNumber: phone
+      });
   }, [
     department,
+    phone,
+    mail,
     city,
     location,
     age,

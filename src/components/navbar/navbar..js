@@ -1,5 +1,11 @@
 import React from 'react';
-import { AppBar, Toolbar, makeStyles, IconButton, Typography } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  makeStyles,
+  IconButton,
+  Typography
+} from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
 
 import Logo from '../../img/covix.png';
@@ -10,18 +16,28 @@ const Navbar = ({ title, history }) => {
   const goToLandingPage = () => {
     history.push('/');
   };
+  const goToCredits = () => {
+    history.push('/credits');
+  };
   return (
-    <AppBar position="relative">
+    <AppBar position='relative'>
       <Toolbar>
         <IconButton onClick={goToLandingPage}>
           <img alt={'logo'} src={Logo} className={logo} />
         </IconButton>
-        <Typography variant="h6" className={titleContainer}>
+        <Typography variant='h6' className={titleContainer}>
           {title}
         </Typography>
-        <IconButton color="inherit" aria-label="home" onClick={goToLandingPage}>
+        <IconButton color='inherit' aria-label='home' onClick={goToLandingPage}>
           <HomeIcon />
         </IconButton>
+        <Typography
+          variant='h6'
+          onClick={goToCredits}
+          style={{ cursor: 'pointer' }}
+        >
+          Creditos
+        </Typography>
       </Toolbar>
     </AppBar>
   );
@@ -29,10 +45,10 @@ const Navbar = ({ title, history }) => {
 
 const useStyles = makeStyles(theme => ({
   titleContainer: {
-    flexGrow: 1,
+    flexGrow: 1
   },
   logo: {
-    maxWidth: '150px',
-  },
+    maxWidth: '150px'
+  }
 }));
 export default withRouter(Navbar);

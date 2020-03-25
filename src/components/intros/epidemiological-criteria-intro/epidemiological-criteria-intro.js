@@ -6,7 +6,7 @@ const EpidemiologicalCriteriaIntro = ({
 }) => {
   return (
     <Container maxWidth="xs">
-      <Typography align="center" paragraph>A continuación analizaremos algunos criterios empidemiológicos</Typography>
+      <Typography align="center" paragraph>A continuación analizaremos algunos criterios epidemiológicos</Typography>
       <Button fullWidth variant="contained" color="secondary" onClick={onNext}>Continuar</Button>
     </Container>
   );

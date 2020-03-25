@@ -18,6 +18,8 @@ type User @model {
 type Form @model {
 	id: ID!
 	location: Location!
+	mail: String!
+	phoneNumber: String!
 	level: Level!
 	city: String!
 	department: String!
@@ -37,7 +39,7 @@ enum Doctype {
 }
 
 enum Level {
-	TIER_O,
+	TIER_0,
 	TIER_1,
 	TIER_2,
 	TIER_3,

@@ -22,8 +22,7 @@ const SeverityMinorAgeForm = ({ severity, setSeverity, onNext }) => {
       <form autoComplete='off'>
         <FormLabel component='legend'>
           <Typography>
-            Cuales de los siguientes sintomas sientes, si no puedes continuar
-            sin marcar ninguna casilla:
+          ¿Cuáles de los siguientes criterios de gravedad aplica a tu caso?, en caso contrario, click en continuar.
           </Typography>
         </FormLabel>
         <FormGroup>

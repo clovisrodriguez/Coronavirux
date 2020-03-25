@@ -101,6 +101,8 @@ export const createForm = `mutation CreateForm(
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department
@@ -119,6 +121,8 @@ export const updateForm = `mutation UpdateForm(
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department
@@ -137,6 +141,8 @@ export const deleteForm = `mutation DeleteForm(
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department

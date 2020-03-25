@@ -80,6 +80,8 @@ export const onCreateForm = `subscription OnCreateForm {
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department
@@ -95,6 +97,8 @@ export const onUpdateForm = `subscription OnUpdateForm {
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department
@@ -110,6 +114,8 @@ export const onDeleteForm = `subscription OnDeleteForm {
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department

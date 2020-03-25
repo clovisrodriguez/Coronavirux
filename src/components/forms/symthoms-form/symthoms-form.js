@@ -1,5 +1,5 @@
 import React from 'react';
-import { FormControlLabel, Button, FormGroup, Checkbox, Typography } from '@material-ui/core';
+import { FormControlLabel, Button, FormGroup, FormLabel, Checkbox, Typography } from '@material-ui/core';
 import symthomsCriteria from '../../../constants/synthoms-criteria';
 
 
@@ -17,6 +17,12 @@ const SymthomsForm = ({
 
   return (
     <form autoComplete="off">
+      <FormLabel component='legend'>
+          <Typography>
+            ¿Cuáles de los siguientes criterios de gravedad aplica a tu caso?,
+            en caso contrario, click en continuar.
+          </Typography>
+        </FormLabel>
       <FormGroup>
         {
           Object.entries(symthomsCriteria).map(([key, value]) => (

@@ -70,6 +70,8 @@ export const getForm = `query GetForm($id: ID!) {
       lat
       lng
     }
+    mail
+    phoneNumber
     level
     city
     department
@@ -90,6 +92,8 @@ export const listForms = `query ListForms(
         lat
         lng
       }
+      mail
+      phoneNumber
       level
       city
       department
