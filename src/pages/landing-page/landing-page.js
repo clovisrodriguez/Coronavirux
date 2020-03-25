@@ -23,7 +23,7 @@ const LandingPage = ({ history }) => {
     content
   } = useStyles();
   const goToStatistics = () => {
-    history.push('/statistics');
+    history.push('/stats');
   };
   const goToForm = () => {
     history.push('/form');
