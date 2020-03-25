@@ -7,11 +7,14 @@ import {
   Typography
 } from '@material-ui/core';
 import HomeIcon from '@material-ui/icons/Home';
+import ReactGA from 'react-ga';
 
 import Logo from '../../img/covix.png';
 import { withRouter } from 'react-router-dom';
 
+
 const Navbar = ({ title, history }) => {
+  ReactGA.pageview(window.location.pathname + window.location.search);
   const { logo, titleContainer } = useStyles();
   const goToLandingPage = () => {
     history.push('/');

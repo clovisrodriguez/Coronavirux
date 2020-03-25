@@ -9,7 +9,6 @@ import Box from '@material-ui/core/Box';
 import Grid from '@material-ui/core/Grid';
 import CircularProgress from '@material-ui/core/CircularProgress';
 import Hidden from '@material-ui/core/Hidden';
-import ReactGA from 'react-ga';
 import BarChartIcon from '@material-ui/icons/BarChart';
 import { Fab } from '@material-ui/core';
 import CloseIcon from '@material-ui/icons/Close';
@@ -23,8 +22,6 @@ const GOOGLE_MAP_KEY = 'AIzaSyAnWeyMrHdwIJovYY2hdO18aonmJIiPvCM';
 Geocode.setApiKey(GOOGLE_MAP_KEY);
 Geocode.setLanguage('es');
 Geocode.setRegion('co');
-
-ReactGA.pageview(window.location.pathname + window.location.search);
 
 export default () => {
   const [cities, setCities] = useState([]);

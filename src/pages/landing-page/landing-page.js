@@ -12,8 +12,11 @@ import {
 } from '@material-ui/core';
 import { withRouter } from 'react-router-dom';
 import Logo from '../../img/covix.png';
+import ReactGA from 'react-ga';
+
 
 const LandingPage = ({ history }) => {
+  ReactGA.pageview(window.location.pathname + window.location.search);
   const {
     appBar,
     containerBackground,

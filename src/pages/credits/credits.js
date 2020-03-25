@@ -41,6 +41,9 @@ const Credits = ({ history }) => {
               <Typography variant='body1' paragraph>
                 Clovis Rodríguez
               </Typography>
+              <Typography variant='body1' paragraph>
+                David Martinez, practicante
+              </Typography>
             </Grid>
             <Grid item xs={12} md={6}>
               <Typography variant='h5' className={title} gutterBottom>
@@ -56,10 +59,12 @@ const Credits = ({ history }) => {
           </Grid>
           <Grid container disableGutters spacing={1}>
             <Typography variant='body1' paragraph>
-              Este trabajo es la suma de todos los colaboradores del proyecto
-              junto a QATRO20 COMPANY SAS, si deseas ayudarnos estamos abierto
-              a todas las ideas y formas de que pueda seguir creciendo este
-              proyecto puedes escribirnos a admin@qatro20.com o al +573002697613
+              Y en el mensaje: Este trabajo es la suma de todos los
+              colaboradores del proyecto. Coronavirux es una inciativa de
+              QATRO20 COMPANY. Si deseas ayudarnos, estamos abiertos a todo tipo
+              de propuestas, ideas, alianzas que permitan llevar esta solución a
+              otro nivel. Que tenga más impacto y que cumpla con su propósito,
+              sacar el covid-19 a como de lugar. para contactarnos puedes escribirnos a admin@qatro20.com o a whatsapp al número +57 300 2697613
             </Typography>
           </Grid>
         </div>
