@@ -65,8 +65,6 @@ export default () => {
         city => city.location === undefined
       );
 
-      debugger;
-
       if (citiesWithOutLocation.length > 0) {
         const citiesWithLocation = await Promise.all(
           citiesWithOutLocation &&

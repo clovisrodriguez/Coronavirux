@@ -27,7 +27,7 @@ export const getINSReport = async () => {
   const confirmCases = _.flatMap(body).map((confirmCase, i) => {
     const confirmCaseObject = {};
 
-    if (i) {
+    if (i && confirmCase[0]) {
       confirmCase.forEach((prop, i) => {
         switch (i) {
           case 0:
@@ -67,9 +67,9 @@ export const getINSReport = async () => {
           default:
         }
       });
+      return confirmCaseObject;
     }
-    return confirmCaseObject;
   });
 
-  return confirmCases.slice(1);
+  return _.compact(confirmCases.slice(1));
 };
